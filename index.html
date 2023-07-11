@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script src="./assets/js/index.js" type="module"></script>
+    
+    <title>Money Exchange</title>
+</head>
+<body>
+    <div class="container">
+    <h1>Currency Exchange</h1>
+
+                        <!-- Aca consideramos lo solicitado
+        ● Un input para tipear la cantidad de pesos chilenos a convertir
+        ● Un    select para elegir la moneda a convertir
+        ● Un    botón para iniciar el proceso de consulta y renderización de datos -->
+
+    <div class="converterbox">
+        <span>Amount in CLP</span>
+        <input type="number" id="inputclp" placeholder="Ingrese el monto en CLP" min="0"/>
+        <span>Exchange Currency</span>
+        <select id="currency"></select>
+        <button id="execute">Convertir</button>
+        <p id="resultsBox"></p>
+    </div>
+
+    <canvas id="graphicChart"></canvas>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    
+
+</body>
+</html>
