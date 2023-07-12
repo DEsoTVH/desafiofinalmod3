@@ -1,82 +1,75 @@
-import { obtenerTodosLosIndicadores, obtenerUltimosPorIndicador } from './fetch.js';
+import { getAllIndicators, getLastTenByIndicator } from './fetch.js';
 
-const montoClp = document.getElementById('inputclp');
-const tipoMoneda = document.getElementById('currency');
-const btnConvertir = document.getElementById('execute');
-const resultado = document.getElementById('resultsBox');
-const graficaIndicador = document.getElementById('graphicChart');
+const clpAmount = document.getElementById('inputclp');
+const currencySelect = document.getElementById('currency');
+const convertButton = document.getElementById('execute');
+const result = document.getElementById('resultsBox');
+const indicatorChart = document.getElementById('graphicChart');
 
-// Cargar tipos de moneda en el select
-const cargarTiposMonedas = async () => {
-const indicadores = await obtenerTodosLosIndicadores();
-if (indicadores) {
-    Object.keys(indicadores)
-    .slice(3)
-    .forEach((indicador) => {
-        tipoMoneda.innerHTML += `<option value="${indicador}">${indicador}</option>`;
-    });
-}
-};
-
-// Obtener el valor del tipo de moneda seleccionado
-const obtenerValorTipoMoneda = async (tipoMoneda) => {
-const data = await obtenerTodosLosIndicadores();
-if (data) {
-    return data[tipoMoneda].valor;
-} else {
-    return null;
-}
-};
-
-// Renderizar la gráfica del indicador seleccionado
-const renderizarGraficaIndicador = async () => {
-    const dataTipoMoneda = await obtenerUltimosPorIndicador(tipoMoneda.value);
-    if (dataTipoMoneda) {
-        const tipoDeGrafica = 'bar'; 
-        const titulo = `Gráfica ${tipoMoneda.value.toUpperCase()}`;
-        const fechas = dataTipoMoneda.map((moneda) => moneda.fecha.slice(0, 10));
-    const valores = dataTipoMoneda.map((moneda) => moneda.valor);
-
-    const config = {
-        type: tipoDeGrafica,
-        data: {
-            labels: fechas,
-            datasets: [
-            {
-                label: titulo,
-                backgroundColor: 'rgba(214, 40, 40, 0.5)',
-                data: valores,
-            },
-        ],
-    },
-};
-
-    new Chart(graficaIndicador, config);
-}
-};
-
-// Evento para limpiar el error al hacer clic en el input de monto
-montoClp.addEventListener('click', () => {
-montoClp.classList.remove('is-invalid');
-});
-
-// Evento para realizar la conversión al presionar el botón Convertir
-
-btnConvertir.addEventListener('click', async () => {
-if (montoClp.value !== '' && montoClp.value > 0) {
-    const valorTipoMoneda = await obtenerValorTipoMoneda(tipoMoneda.value);
-    if (valorTipoMoneda) {
-        const resultadoConversion = montoClp.value / valorTipoMoneda;
-        resultado.textContent = `Resultado: $${resultadoConversion.toFixed(2)}`;
-        await renderizarGraficaIndicador();
+const loadCurrencyTypes = async () => {
+    const indicators = await getAllIndicators();
+    if (indicators) {
+        Object.keys(indicators)
+            .slice(3)
+            .forEach((indicator) => {
+                currencySelect.innerHTML += `<option value="${indicator}">${indicator}</option>`;
+            });
     }
-    montoClp.value = '';
-    montoClp.focus();
+};
+
+const getCurrencyValue = async (currencyType) => {
+    const data = await getAllIndicators();
+    if (data) {
+        return data[currencyType].valor;
     } else {
-    montoClp.classList.add('is-invalid');
-    montoClp.value = '';
+        return null;
+    }
+};
+
+const renderIndicatorChart = async () => {
+    const indicatorData = await getLastTenByIndicator(currencySelect.value);
+    if (indicatorData) {
+        const chartType = 'bar'; 
+        const title = `Chart ${currencySelect.value.toUpperCase()}`;
+        const dates = indicatorData.map((currency) => currency.fecha.slice(0, 10));
+        const values = indicatorData.map((currency) => currency.valor);
+
+        const config = {
+            type: chartType,
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: title,
+                        backgroundColor: 'rgba(214, 40, 40, 0.5)',
+                        data: values,
+                    },
+                ],
+            },
+        };
+
+        new Chart(indicatorChart, config);
+    }
+};
+
+clpAmount.addEventListener('click', () => {
+    clpAmount.classList.remove('is-invalid');
+});
+
+convertButton.addEventListener('click', async () => {
+    if (clpAmount.value !== '' && clpAmount.value > 0) {
+        const currencyValue = await getCurrencyValue(currencySelect.value);
+        if (currencyValue) {
+            const conversionResult = clpAmount.value / currencyValue;
+            result.textContent = `Result: $${conversionResult.toFixed(2)}`;
+            await renderIndicatorChart();
+        }
+        clpAmount.value = '';
+        clpAmount.focus();
+    } else {
+        clpAmount.classList.add('is-invalid');
+        clpAmount.value = '';
     }
 });
 
-// Cargar los tipos de moneda al cargar la página
-cargarTiposMonedas();
+loadCurrencyTypes();
