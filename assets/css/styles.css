@@ -4,4 +4,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
+
+.graphiccontainer {
+
+    display: flexbox;
+    width: 550px;
+    height: 280px;
+
+}
+
