@@ -19,10 +19,13 @@
 
     <div class="converterbox">
         <span>Amount in CLP</span>
-        <input type="number" id="inputclp" placeholder="Please set your amount in CLP" min="0"/>
+        <input type="number" id="inputclp" placeholder="Please set your amount in CLP" min="0" pattern="[0-9]*" inputmode="numeric" />
+        <br>
         <span>Exchange Currency</span>
         <select id="currency"></select>
+        <br>
         <button id="execute">Convert</button>
+        <br>
         <p id="resultsBox"></p>
     </div>
 

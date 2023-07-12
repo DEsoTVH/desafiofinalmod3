@@ -1,10 +1,18 @@
-
 .container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     
+}
+
+.converterbox{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+    border: 1px solid black;
+    padding: 10px;
 }
 
 .graphiccontainer {
@@ -14,4 +22,7 @@
     height: 280px;
 
 }
+
+
+
 

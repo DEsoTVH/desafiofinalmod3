@@ -35,7 +35,7 @@ const renderizarGraficaIndicador = async () => {
         const tipoDeGrafica = 'bar'; 
         const titulo = `Gráfica ${tipoMoneda.value.toUpperCase()}`;
         const fechas = dataTipoMoneda.map((moneda) => moneda.fecha.slice(0, 10));
-        const valores = dataTipoMoneda.map((moneda) => moneda.valor);
+    const valores = dataTipoMoneda.map((moneda) => moneda.valor);
 
     const config = {
         type: tipoDeGrafica,
